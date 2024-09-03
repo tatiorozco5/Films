@@ -4,9 +4,15 @@ const morgan=require('morgan')
 const{port}=require('./config')
 const{connection}=require('./config/db')
 
+const genero = require("./Routes/generoRoute")
+
 const app=express()
 connection()
+
+app.use(express.json())
 app.use(morgan('dev'))
+
+genero(app)
 
 app.get("/",(req,res)=>{
     return res.json({name:"api films"})
