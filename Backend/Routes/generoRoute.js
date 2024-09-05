@@ -9,9 +9,8 @@ function Genero (app) {
 
     router.get("/", async (req,res)=>{
        
-            const generos = await generoServ.getallGeneros()
-            //return generos
-            return res.json(generos)
+    const generos = await generoServ.getallGeneros()
+    return res.json(generos)
         
     })
     router.post("/create",async (req,res) => {

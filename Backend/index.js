@@ -6,6 +6,8 @@ const{connection}=require('./config/db')
 
 const genero = require("./Routes/generoRoute")
 const director = require("./Routes/directorRoute")
+const productora = require("./Routes/productoraRoute")
+
 
 const app=express()
 connection()
@@ -15,6 +17,7 @@ app.use(morgan('dev'))
 
 genero(app)
 director(app)
+productora(app)
 
 app.get("/",(req,res)=>{
     return res.json({name:"api films"})
