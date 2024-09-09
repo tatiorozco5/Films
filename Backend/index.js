@@ -8,6 +8,7 @@ const genero = require("./Routes/generoRoute")
 const director = require("./Routes/directorRoute")
 const productora = require("./Routes/productoraRoute")
 const tipo = require("./Routes/tipoRoute")
+const media = require("./Routes/mediaRoute")
 
 const app = express()
 connection()
@@ -19,6 +20,7 @@ genero(app)
 director(app)
 productora(app)
 tipo(app)
+media(app)
 
 app.get("/", (req, res) => {
     return res.json({ name: "api films" })
