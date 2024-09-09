@@ -3,34 +3,54 @@ const DirectorServices = require("../services/directorServices")
 
 function Director(app){
     const router = express.Router()
-    const directorserv = new DirectorServices()
+    const directorService = new DirectorServices()
 
     app.use("/api/director", router)
 
-    router.get("/", async (req, res)=>{
-        const directores = await directorserv.getallDirector()
-        return res.json(directores)
-    })
+    router.get("/", async (req, res) => {
+        const result = await directorService.getAllDirectors();
 
-    router.post("/create", async (req, res)=>{
-        const director = await directorserv.createDirector(req.body)
-        return res.json(director)
-    })
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
 
-    router.get("/:id", async (req, res)=>{
-        const directorid = await directorserv.getDirectorbyId(req.params.id)
-        return res.json(directorid)
-    })
+        return res.status(200).json(result);
+    });
 
-    router.put("/update/:id", async (req, res)=>{
-        const updatedirector = await directorserv.updateDirector(req.params.id, req.body)
-        return res.json(updatedirector)
-    })
+    router.post("/create", async (req, res) => { 
+        const director = await directorService.createDirector(req.body);
+        return res.json(director);
+    });
 
-    router.delete("/:id", async (req, res)=>{
-        const deletedirector = await directorserv.deleteDirector(req.params.id)
-        return res.json(deletedirector)
-    })
+    router.get("/:id", async (req, res) => {
+        const result = await directorService.getDirectorById(req.params.id);
+
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
+
+        return res.status(200).json(result);
+    });
+
+    router.put("/update/:id", async (req, res) => {
+        const result = await directorService.updateDirector(req.params.id, req.body);
+
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
+
+        return res.status(200).json(result);
+    });
+
+    router.delete('/:id', async (req, res) => {
+        const result = await directorService.deleteDirector(req.params.id);
+
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
+
+        return res.status(200).json(result);
+    });
 }
 
 module.exports = Director

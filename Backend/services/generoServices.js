@@ -1,53 +1,64 @@
-const GeneroModel = require("../models/GeneroModel")
+const GeneroModel = require('../models/GeneroModel');
 
-class Genero{
-    async getallGeneros(){
+class GeneroService {
+    async createGenero(data) {
         try {
-            const generos = await GeneroModel.find()
-            return generos
+            const newGenero = await GeneroModel.create(data);
+            return newGenero;
         } catch (error) {
-            console.log(error);
-            return error
-            
+            console.error(error);
+            return { error: 'Error al crear el género' };
         }
     }
-    async createGenero(data){
+
+    async getAllGeneros() {
         try {
-            console.log(data);
-            const newgenero = await GeneroModel.create(data)
-            return newgenero
+            const generos = await GeneroModel.find();
+            return generos;
         } catch (error) {
-            console.log(error);
-            return error
+            console.error(error);
+            return { error: 'Error al obtener la lista de géneros' };
         }
     }
-    async getGenerobyId(id){
+
+    async getGeneroById(id) {
         try {
-            const generoid = await GeneroModel.findById(id)
-            return generoid
+            const genero = await GeneroModel.findById(id);
+            if (!genero) {
+                return { error: 'Género no encontrado' };
+            }
+            return genero;
         } catch (error) {
-            console.log(error);
-            return error 
+            console.error(error);
+            return { error: 'Error al obtener el género' };
         }
     }
-    async updateGenero(id, data){
+
+    async updateGenero(id, data) {
         try {
-            const updategenero = await GeneroModel.findByIdAndUpdate(id, data,{new:true})
-            return updategenero
+            const updatedGenero = await GeneroModel.findByIdAndUpdate(id, data, { new: true });
+            if (!updatedGenero) {
+                return { error: 'Género no encontrado' };
+            }
+            return updatedGenero;
         } catch (error) {
-            console.log(error);
-            return error
+            console.error(error);
+            return { error: 'Error al actualizar el género' };
         }
     }
-    async deleteGenero(id){
+
+    async deleteGenero(id) {
         try {
-            const deletegenero = await GeneroModel.findByIdAndDelete(id)
-            return deletegenero
+            const deletedGenero = await GeneroModel.findByIdAndDelete(id);
+            if (!deletedGenero) {
+                return { error: 'Género no encontrado' };
+            }
+            return deletedGenero;
         } catch (error) {
-            console.log(error);
-            return error 
+            console.error(error);
+            return { error: 'Error al eliminar el género' };
         }
     }
 }
 
-module.exports = Genero
+module.exports = GeneroService;

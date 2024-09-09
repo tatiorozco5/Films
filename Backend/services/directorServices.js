@@ -1,54 +1,64 @@
-const DirectorModel = require("../models/DirectorModel")
+const DirectorModel = require('../models/DirectorModel');
 
-class Director{
-    async getallDirector(){
+class DirectorService {
+    async createDirector(data) {
         try {
-            const directores = await DirectorModel.find()
-            return directores
+            const newDirector = await DirectorModel.create(data);
+            return newDirector;
         } catch (error) {
-            console.log(error);
-            return error
-            
+            console.error(error);
+            return { error: 'Error al crear el director' };
         }
     }
-    async createDirector(data){
+
+    async getAllDirectors() {
         try {
-            console.log(data);
-            const newdirector = await DirectorModel.create(data)
-            return newdirector
+            const directors = await DirectorModel.find();
+            return directors;
         } catch (error) {
-            console.log(error);
-            return error        
+            console.error(error);
+            return { error: 'Error al obtener la lista de directores' };
         }
     }
-    async getDirectorbyId(id){
+
+    async getDirectorById(id) {
         try {
-            const directorid = await DirectorModel.findById(id)
-            return directorid
+            const director = await DirectorModel.findById(id);
+            if (!director) {
+                return { error: 'Director no encontrado' };
+            }
+            return director;
         } catch (error) {
-            console.log(error);
-            return error 
+            console.error(error);
+            return { error: 'Error al obtener el director' };
         }
     }
-    async updateDirector(id, data){
+
+    async updateDirector(id, data) {
         try {
-            const updatedirector = await DirectorModel.findByIdAndUpdate(id, data,{new:true})
-            return updatedirector
+            const updatedDirector = await DirectorModel.findByIdAndUpdate(id, data, { new: true });
+            if (!updatedDirector) {
+                return { error: 'Director no encontrado' };
+            }
+            return updatedDirector;
         } catch (error) {
-            console.log(error);
-            return error
+            console.error(error);
+            return { error: 'Error al actualizar el director' };
         }
     }
-    async deleteDirector(id){
+
+    async deleteDirector(id) {
         try {
-            const deletedirector = await DirectorModel.findByIdAndDelete(id)
-            return deletedirector
+            const deletedDirector = await DirectorModel.findByIdAndDelete(id);
+            if (!deletedDirector) {
+                return { error: 'Director no encontrado' };
+            }
+            return deletedDirector;
         } catch (error) {
-            console.log(error);
-            return error 
+            console.error(error);
+            return { error: 'Error al eliminar el director' };
         }
     }
-      
 }
 
-module.exports = Director
+module.exports = DirectorService;
