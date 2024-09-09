@@ -15,6 +15,6 @@ const DirectorSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const DirectorModel = mongoose.model('Director', DirectorSchema)
+const DirectorModel = mongoose.model('Directores', DirectorSchema)
 
 module.exports = DirectorModel

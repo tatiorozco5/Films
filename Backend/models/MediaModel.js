@@ -15,7 +15,6 @@ const MediaSchema = new mongoose.Schema({
     Sinopsis: {
         type: String,
         required: true,
-        minlength: [100, 'La sinopsis no debe ser menor a 100 caracteres'],
         maxlength: [500, 'La sinopsis no debe ser mayor a 500 caracteres']
     },
     Url: {
@@ -38,7 +37,7 @@ const MediaSchema = new mongoose.Schema({
     },
     Director: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Director',
+        ref: 'Directores',
         required: true
     },
     Productora: {
