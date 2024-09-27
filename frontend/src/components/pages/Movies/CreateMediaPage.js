@@ -87,19 +87,6 @@ const CreateMediaPage = ({ onClose, selectedMedia, onUpdate }) => {
                 await createMedia(newMedia);
                 alert('Película creada exitosamente!');
             }
-            // const result = await createMedia(newMedia);
-            // alert('Película creada exitosamente!');
-            // setNewMedia({
-            //     Titulo: '',
-            //     Sinopsis: '',
-            //     Url: '',
-            //     Imagen: '',
-            //     AnoEstreno: '',
-            //     Genero: '',
-            //     Director: '',
-            //     Productora: '',
-            //     Tipo: ''
-            // })
             onClose()
         } catch (error) {
             console.error('Error al crear la película:', error);
