@@ -38,19 +38,21 @@ export const getFormData = async () => {
 };
 
 
-export const createMedia = async (media) => {
+export const createMedia = async (newMedia) => {
     try {
+
+        const { Serial, ...mediaWithoutSerial } = newMedia;
 
         const response = await fetch(`${URL_BASE}/media/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(media),
+            body: JSON.stringify(mediaWithoutSerial),
         })
 
 
         if (!response.ok) {
             const errorMessage = await response.json();
-            console.error('Error desde el servidor:', errorMessage); 
+            console.error('Error desde el servidor:', errorMessage);
             throw new Error(errorMessage.message || 'Error al crear la media');
         }
 

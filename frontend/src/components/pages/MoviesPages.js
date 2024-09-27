@@ -43,30 +43,28 @@ const MoviesPage = ({ media }) => {
             <button className="btn btn-primary m-2" onClick={() => setShowModal(true)}>
                 Crear Nueva Película
             </button>
-
-            {mediaList.map((media) => (
-
-                <div key={media.id} className="card mb-3 border-0 w-100" style={{ maxwidth: '440px' }}>
-
-                    <div className="row g-0">
-                        <div className="col-md-4">
-                            <img src={media.Imagen} className="img-fluid rounded-start w-100" alt={media.Titulo} />
-                        </div>
-                        <div className="col-md-6">
-                            <div className="card-body">
-                                <h5 className="card-title">{media.Titulo}</h5>
-                                <p className="card-text">{media.Sinopsis}</p>
-                                <p className="card-text"><small className="text-body-secondary">
-                                    {media.createdAt ? formatearFecha(media.createdAt) : 'Fecha no disponible'}
-                                </small></p>
+            
+            <div className="row">
+                {mediaList.map((media) => (
+                    <div className="col">
+                        <div key={media.id} className="card mb-3 border-0 " style={{ width: '18rem' }}>
+                            <img src={media.Imagen} className="card-img-top" alt={media.Titulo} style={{ width: '288px', height: '432px' }} />
+                            <div className="card-body text-center">
+                                <h5 className="card-title">Titulo {media.Titulo}</h5>
+                                <p className="card-text">Genero {media.Genero.Nombre}</p>
+                                <p className="card-text">Año de estreno  {media.AnoEstreno}</p>	
                             </div>
-
+                            <div className="card-footer text-center">
+                                <small className="text-body-secondary">
+                                    {media.createdAt ? formatearFecha(media.createdAt) : 'Fecha no disponible'}
+                                </small>
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
-            {showModal && <CreateMediaPage onClose={() => setShowModal(false)} />}
-        </div>
+                ))}
+                {showModal && <CreateMediaPage onClose={() => setShowModal(false)} />}
+            </div>  </div>
+
     );
 }
 

@@ -10,7 +10,6 @@ const CreateMediaPage = ({ onClose }) => {
     });
 
     const [newMedia, setNewMedia] = useState({
-        Serial: '',
         Titulo: '',
         Sinopsis: '',
         Url: '',
@@ -37,14 +36,14 @@ const CreateMediaPage = ({ onClose }) => {
 
     // Manejar los cambios en los inputs
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewMedia({ ...newMedia, [name]: value });
-        console.log(newMedia);
+        setNewMedia({
+            ...newMedia,
+            [e.target.name]: e.target.value
+        });
     };
 
 
     const handleCreateMedia = async () => {
-        console.log(newMedia); // Agregar esta línea para depurar
         try {
             const result = await createMedia(newMedia);
             alert('Película creada exitosamente!');
@@ -56,25 +55,13 @@ const CreateMediaPage = ({ onClose }) => {
 
     return (
         <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Crear Nueva Película</h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
                     <div className="modal-body">
-                        {/* Inputs para los campos */}
-                        <div className="mb-3">
-                            <label htmlFor="Serial" className="form-label">Serial</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="Serial"
-                                name="Serial"
-                                value={newMedia.Serial}
-                                onChange={handleInputChange}
-                            />
-                        </div>
                         <div className="mb-3">
                             <label htmlFor="Titulo" className="form-label">Título</label>
                             <input
