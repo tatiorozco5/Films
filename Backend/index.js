@@ -16,7 +16,7 @@ connection()
 
 const cosrOptions = {
     origin:'http://localhost:3000',
-    methods:'get,put,post,DELETE',
+    methods:'GET,PUT,POST,DELETE',
     credentials:true
 }
 
