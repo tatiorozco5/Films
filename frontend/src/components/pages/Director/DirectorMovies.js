@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { getAllDirector } from '../../services/DirectorService'
+import { getAllDirector, CreateDirector, UpdateDirector, deleteDirector } from '../../services/DirectorService'
 
 
 const DirectorMovies = () => {
     const [directorList, setDirectorList] = useState([])
     const [showModal, setShowModal] = useState(false)
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [currentDirector, setCurrentDirector] = useState({ Nombre_Director:'', Estado:'', });
 
     useEffect(() => {
         fetchDirector()
@@ -23,11 +25,50 @@ const DirectorMovies = () => {
         }
     }
 
+const handleOpenCreateModal = () => {
+    setCurrentDirector({Nombre_Director:'', Estado:''})
+    setShowModal(true)
+}
+
+const handleCloseModal = () => {
+    setShowModal(false)
+}
+
+const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCurrentDirector((prevDirector) => ({
+        ...prevDirector,
+        [name]: value
+    }));
+};
+
+const handleSaveDirector = async () => {
+    if (isUpdating) {
+        // Actualización
+        try {
+            await UpdateDirector(currentDirector._id, currentDirector);
+            fetchDirector(); // Recargar la lista de tipos
+            handleCloseModal(); // Cerrar el modal
+        } catch (error) {
+            console.error('Error al actualizar el director:', error);
+        }
+    } else {
+        // Creación
+        try {
+            await CreateDirector(currentDirector);
+            fetchDirector(); // Recargar la lista de tipos
+            handleCloseModal(); // Cerrar el modal
+        } catch (error) {
+            console.error('Error al crear el director:', error);
+        }
+    }
+};
+
     return (
         <div className="container mt-4">
             <h1>Lista de Director</h1>
-            <button className="btn btn-primary m-2" onClick={() => { setShowModal(true) }}>
-                Crear NuevO Director
+            <button className="btn btn-primary m-2" onClick={handleOpenCreateModal}>
+                Crear Nuevo Director
             </button>
 
             <div className="row">
@@ -46,10 +87,66 @@ const DirectorMovies = () => {
                         </div>
                     </div>
                 ))}
-                {/* {showModal && <CreateMediaPage onClose={() => setShowModal(false)} 
-                    selectedMedia={selectedMedia} 
-                    onUpdate={handleUpdate} />} */}
-            </div>  </div>
+                
+            </div> 
+            {/* Modal para creación/actualización */}
+            {showModal && (
+                <div className="modal show d-block" tabIndex="-1" role="dialog">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">
+                                    {isUpdating ? 'Actualizar Director' : 'Crear Nuevo Director'}
+                                </h5>
+                                <button
+                                    type="button"
+                                    className="close"
+                                    onClick={handleCloseModal}
+                                >
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="form-group">
+                                    <label>Nombre</label>
+                                    <input
+                                        type="text"
+                                        name="Nombre"
+                                        value={currentDirector.Nombre_Director}
+                                        onChange={handleInputChange}
+                                        className="form-control"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Estado</label>
+                                    <textarea
+                                        name="Descripcion"
+                                        value={currentDirector.Estado}
+                                        onChange={handleInputChange}
+                                        className="form-control"
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={handleCloseModal}
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={handleSaveDirector}
+                                >
+                                    {isUpdating ? 'Guardar Cambios' : 'Crear'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )} </div>
 
     );
 }
