@@ -29,13 +29,6 @@ const MoviesPage = ({ media }) => {
         setShowModal(true)
     }
 
-<<<<<<< Updated upstream
-    const handleUpdate = (updatedMedia) => {
-        setMediaList((prevMedia) => 
-            prevMedia.map(media => media._id === updatedMedia._id ? updatedMedia : media)
-        );
-    };
-=======
     const handleUpdate = async (updateMedia) => {
         try {
             await updateMedia(selectedMedia._id, updateMedia)
@@ -47,7 +40,6 @@ const MoviesPage = ({ media }) => {
         }
     }
 
->>>>>>> Stashed changes
     const handleDelete = async (mediaId) => {
         if (window.confirm("¿Estas seguro que deseas eliminar esta pelicula?")) {
             try {

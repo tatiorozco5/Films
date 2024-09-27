@@ -21,7 +21,10 @@ const Navbar = () => {
 
                             <Link className="nav-link" to="/tipos">Tipos</Link>
                         </li>
-                        
+                        <li className="nav-item">
+
+                            <Link className="nav-link" to="/director">Director</Link>
+                        </li>
                     </ul>
 
                 </div>
