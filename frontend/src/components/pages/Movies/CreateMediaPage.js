@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getFormData, createMedia, updateMedia } from '../../services/mediaService';
 
-const CreateMediaPage = ({ onClose, selectedMedia }) => {
+const CreateMediaPage = ({ onClose, selectedMedia, onUpdate }) => {
     const [formData, setFormData] = useState({
         generos: [],
         directores: [],
@@ -9,7 +9,7 @@ const CreateMediaPage = ({ onClose, selectedMedia }) => {
         tipos: []
     });
 
-    
+
     const [newMedia, setNewMedia] = useState({
         Titulo: '',
         Sinopsis: '',
@@ -19,8 +19,8 @@ const CreateMediaPage = ({ onClose, selectedMedia }) => {
         Genero: '',
         Director: '',
         Productora: '',
-        Tipo: ''
-    });
+        Tipo: ''
+    });
 
     // Cargar los datos de los select al montar el componente
     useEffect(() => {
@@ -47,13 +47,12 @@ const CreateMediaPage = ({ onClose, selectedMedia }) => {
                 Url: selectedMedia.Url || '',
                 Imagen: selectedMedia.Imagen || '',
                 AnoEstreno: selectedMedia.AnoEstreno || '',
-                Genero: selectedMedia.Genero?._id || '',  // Asegurar que sea el ID
+                Genero: selectedMedia.Genero?._id || '',
                 Director: selectedMedia.Director?._id || '',
                 Productora: selectedMedia.Productora?._id || '',
                 Tipo: selectedMedia.Tipo?._id || ''
             });
         } else {
-            // Resetear el formulario para creación de nueva película
             setNewMedia({
                 Titulo: '',
                 Sinopsis: '',
@@ -67,7 +66,7 @@ const CreateMediaPage = ({ onClose, selectedMedia }) => {
             });
         }
     }, [selectedMedia]);
-  
+
 
     // Manejar los cambios en los inputs
     const handleInputChange = (e) => {
@@ -83,6 +82,7 @@ const CreateMediaPage = ({ onClose, selectedMedia }) => {
             if (selectedMedia) {
                 await updateMedia(selectedMedia._id, newMedia)
                 alert('Película actualizada exitosamente!');
+                onUpdate({ ...newMedia, _id: selectedMedia._id });
             } else {
                 await createMedia(newMedia);
                 alert('Película creada exitosamente!');
@@ -112,7 +112,7 @@ const CreateMediaPage = ({ onClose, selectedMedia }) => {
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">{selectedMedia ? 'Actualizar pelicula':'Crear Nueva Película'} </h5>
+                        <h5 className="modal-title">{selectedMedia ? 'Actualizar pelicula' : 'Crear Nueva Película'} </h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
                     <div className="modal-body">
@@ -250,7 +250,7 @@ const CreateMediaPage = ({ onClose, selectedMedia }) => {
                             Cancelar
                         </button>
                         <button type="button" className="btn btn-primary" onClick={handleSubmit}>
-                            {selectedMedia ? 'Actualizar':'Crear'}
+                            {selectedMedia ? 'Actualizar' : 'Crear'}
                         </button>
                     </div>
                 </div>

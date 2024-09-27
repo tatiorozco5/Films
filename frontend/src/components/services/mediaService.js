@@ -66,7 +66,7 @@ export const createMedia = async (newMedia) => {
 
 export const deleteMedia = async (mediaId) => {
     try {
-                
+
         const response = await fetch(`${URL_BASE}/media/${mediaId}`, {
             method: "DELETE"
         })
@@ -88,7 +88,7 @@ export const deleteMedia = async (mediaId) => {
 
 export const updateMedia = async (mediaId, updateMedia) => {
     try {
-        const response = await fetch(`${URL_BASE}/media/${mediaId}`, {
+        const response = await fetch(`${URL_BASE}/media/update/${mediaId}`, {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateMedia),
@@ -97,13 +97,13 @@ export const updateMedia = async (mediaId, updateMedia) => {
             const errorMessage = await response.json()
             console.error('Error desde el servidor', errorMessage);
             throw new Error(errorMessage.message || 'Error al actualizar la media');
-            
-        } 
+
+        }
         const data = await response.json()
         return data
     } catch (error) {
         console.error('Error al actualizar la media', error);
-        throw error
-        
-    }
+        throw error
+
+    }
 }

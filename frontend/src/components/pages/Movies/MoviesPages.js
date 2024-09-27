@@ -13,16 +13,14 @@ const MoviesPage = ({ media }) => {
 
     const fetchMedia = async () => {
         try {
-            const data = await getAllMedia()
-            if (Array.isArray(data)) {
-                setMediaList(data)
+            const data = await getAllMedia();
+            if (data && Array.isArray(data)) {
+                setMediaList(data);
             } else {
-                console.log("Se esperaba una matriz, pero se obtuvo:", data);
-                setMediaList([])
+                console.error('Los datos obtenidos no son válidos:', data);
             }
         } catch (error) {
-            console.error("Error al obtener la media:", error)
-            setMediaList([])
+            console.error('Error al obtener la lista de medios:', error);
         }
     }
 
@@ -31,27 +29,20 @@ const MoviesPage = ({ media }) => {
         setShowModal(true)
     }
 
-    const handleUpdate = async (updateMedia) => {
-        try {
-            await updateMedia(selectedMedia._id, updateMedia)
-            fetchMedia()
-            setShowModal(false)
-        } catch (error) {
-            console.error('Error al actualizar la media', error);
-            
-        }
-    }
-
+    const handleUpdate = (updatedMedia) => {
+        setMediaList((prevMedia) => 
+            prevMedia.map(media => media._id === updatedMedia._id ? updatedMedia : media)
+        );
+    };
     const handleDelete = async (mediaId) => {
         if (window.confirm("¿Estas seguro que deseas eliminar esta pelicula?")) {
             try {
                 await deleteMedia(mediaId)
 
-                alert('Pelicula eliminada exitosamente')
                 fetchMedia()
 
             } catch (error) {
-                console.error(error.message)
+                console.error('Error al eliminar el medio:', error);
             }
         }
     }
@@ -71,7 +62,7 @@ const MoviesPage = ({ media }) => {
     return (
         <div className="container mt-4">
             <h1>Lista de Películas</h1>
-            <button className="btn btn-primary m-2" onClick={() => setShowModal(true)}>
+            <button className="btn btn-primary m-2" onClick={() =>{ setSelectedMedia(null); setShowModal(true)}}>
                 Crear Nueva Película
             </button>
 
@@ -98,10 +89,12 @@ const MoviesPage = ({ media }) => {
                         </div>
                     </div>
                 ))}
-                {showModal && <CreateMediaPage onClose={() => setShowModal(false)} media={selectedMedia} onUpdate={handleUpdate} />}
+                {showModal && <CreateMediaPage onClose={() => setShowModal(false)} 
+                    selectedMedia={selectedMedia} 
+                    onUpdate={handleUpdate} />}
             </div>  </div>
 
     );
 }
 
-export default MoviesPage
+export default MoviesPage
