@@ -79,9 +79,31 @@ export const deleteMedia = async (mediaId) => {
         }
 
         return true
-        
+
     } catch (error) {
         console.error('Error al eliminar la película:', error);
         throw new Error('Hubo un error al eliminar la película.');
+    }
+}
+
+export const updateMedia = async (mediaId, updateMedia) => {
+    try {
+        const response = await fetch(`${URL_BASE}/media/${mediaId}`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateMedia),
+        })
+        if (!response.ok) {
+            const errorMessage = await response.json()
+            console.error('Error desde el servidor', errorMessage);
+            throw new Error(errorMessage.message || 'Error al actualizar la media');
+            
+        } 
+        const data = await response.json()
+        return data
+    } catch (error) {
+        console.error('Error al actualizar la media', error);
+        throw error
+        
     }
 }

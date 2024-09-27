@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getFormData, createMedia } from '../../services/mediaService';
+import { getFormData, createMedia, updateMedia } from '../../services/mediaService';
 
-const CreateMediaPage = ({ onClose }) => {
+const CreateMediaPage = ({ onClose, selectedMedia }) => {
     const [formData, setFormData] = useState({
         generos: [],
         directores: [],
@@ -9,6 +9,7 @@ const CreateMediaPage = ({ onClose }) => {
         tipos: []
     });
 
+    
     const [newMedia, setNewMedia] = useState({
         Titulo: '',
         Sinopsis: '',
@@ -18,35 +19,41 @@ const CreateMediaPage = ({ onClose }) => {
         Genero: '',
         Director: '',
         Productora: '',
-        Tipo: ''
-    });
+        Tipo: ''
+    });
 
     // Cargar los datos de los select al montar el componente
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getFormData();
-            if (data) {
-                setFormData(data);
-
+            try {
+                const data = await getFormData();
+                if (data) {
+                    setFormData(data);
+                }
+            } catch (error) {
+                console.error('Error al obtener los datos del formulario:', error);
             }
         };
 
         fetchData();
     }, []);
 
-    // Manejar los cambios en los inputs
-    const handleInputChange = (e) => {
-        setNewMedia({
-            ...newMedia,
-            [e.target.name]: e.target.value
-        });
-    };
-
-
-    const handleCreateMedia = async () => {
-        try {
-            const result = await createMedia(newMedia);
-            alert('Película creada exitosamente!');
+    // Efecto para cargar los datos de la película seleccionada cuando selectedMedia cambia
+    useEffect(() => {
+        if (selectedMedia) {
+            setNewMedia({
+                Titulo: selectedMedia.Titulo || '',
+                Sinopsis: selectedMedia.Sinopsis || '',
+                Url: selectedMedia.Url || '',
+                Imagen: selectedMedia.Imagen || '',
+                AnoEstreno: selectedMedia.AnoEstreno || '',
+                Genero: selectedMedia.Genero?._id || '',  // Asegurar que sea el ID
+                Director: selectedMedia.Director?._id || '',
+                Productora: selectedMedia.Productora?._id || '',
+                Tipo: selectedMedia.Tipo?._id || ''
+            });
+        } else {
+            // Resetear el formulario para creación de nueva película
             setNewMedia({
                 Titulo: '',
                 Sinopsis: '',
@@ -57,7 +64,42 @@ const CreateMediaPage = ({ onClose }) => {
                 Director: '',
                 Productora: '',
                 Tipo: ''
-            })
+            });
+        }
+    }, [selectedMedia]);
+  
+
+    // Manejar los cambios en los inputs
+    const handleInputChange = (e) => {
+        setNewMedia({
+            ...newMedia,
+            [e.target.name]: e.target.value
+        });
+    };
+
+
+    const handleSubmit = async () => {
+        try {
+            if (selectedMedia) {
+                await updateMedia(selectedMedia._id, newMedia)
+                alert('Película actualizada exitosamente!');
+            } else {
+                await createMedia(newMedia);
+                alert('Película creada exitosamente!');
+            }
+            // const result = await createMedia(newMedia);
+            // alert('Película creada exitosamente!');
+            // setNewMedia({
+            //     Titulo: '',
+            //     Sinopsis: '',
+            //     Url: '',
+            //     Imagen: '',
+            //     AnoEstreno: '',
+            //     Genero: '',
+            //     Director: '',
+            //     Productora: '',
+            //     Tipo: ''
+            // })
             onClose()
         } catch (error) {
             console.error('Error al crear la película:', error);
@@ -70,7 +112,7 @@ const CreateMediaPage = ({ onClose }) => {
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Crear Nueva Película</h5>
+                        <h5 className="modal-title">{selectedMedia ? 'Actualizar pelicula':'Crear Nueva Película'} </h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
                     <div className="modal-body">
@@ -207,8 +249,8 @@ const CreateMediaPage = ({ onClose }) => {
                         <button type="button" className="btn btn-secondary" onClick={onClose}>
                             Cancelar
                         </button>
-                        <button type="button" className="btn btn-primary" onClick={handleCreateMedia}>
-                            Crear
+                        <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                            {selectedMedia ? 'Actualizar':'Crear'}
                         </button>
                     </div>
                 </div>

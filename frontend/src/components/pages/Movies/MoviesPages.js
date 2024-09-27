@@ -5,6 +5,7 @@ import CreateMediaPage from './CreateMediaPage';
 const MoviesPage = ({ media }) => {
     const [mediaList, setMediaList] = useState([])
     const [showModal, setShowModal] = useState(false)
+    const [selectedMedia, setSelectedMedia] = useState(null)
 
     useEffect(() => {
         fetchMedia()
@@ -25,11 +26,27 @@ const MoviesPage = ({ media }) => {
         }
     }
 
+    const handleEdit = (media) => {
+        setSelectedMedia(media)
+        setShowModal(true)
+    }
+
+    const handleUpdate = async (updateMedia) => {
+        try {
+            await updateMedia(selectedMedia._id, updateMedia)
+            fetchMedia()
+            setShowModal(false)
+        } catch (error) {
+            console.error('Error al actualizar la media', error);
+            
+        }
+    }
+
     const handleDelete = async (mediaId) => {
         if (window.confirm("¿Estas seguro que deseas eliminar esta pelicula?")) {
             try {
                 await deleteMedia(mediaId)
-                                
+
                 alert('Pelicula eliminada exitosamente')
                 fetchMedia()
 
@@ -57,7 +74,7 @@ const MoviesPage = ({ media }) => {
             <button className="btn btn-primary m-2" onClick={() => setShowModal(true)}>
                 Crear Nueva Película
             </button>
-            
+
             <div className="row">
                 {mediaList.map((media) => (
                     <div className="col">
@@ -67,7 +84,7 @@ const MoviesPage = ({ media }) => {
                                 <h5 className="card-title">Titulo {media.Titulo}</h5>
                                 <p className="card-text">Genero {media.Genero.Nombre}</p>
                                 <p className="card-text">Año de estreno  {media.AnoEstreno}</p>
-                            
+
                             </div>
                             <div className="card-footer text-center">
                                 <small className="text-body-secondary">
@@ -75,13 +92,13 @@ const MoviesPage = ({ media }) => {
                                 </small>
                             </div>
                             <div className="card-footer text-center">
-                            <button type="button" className="btn btn-success btn-sm m-2">Actualizar</button>
-                            <button type="button" className="btn btn-danger btn-sm m-2" onClick={() => handleDelete(media._id)}>Eliminar</button>
+                                <button type="button" className="btn btn-success btn-sm m-2" onClick={() => handleEdit(media)}>Actualizar</button>
+                                <button type="button" className="btn btn-danger btn-sm m-2" onClick={() => handleDelete(media._id)}>Eliminar</button>
                             </div>
                         </div>
                     </div>
                 ))}
-                {showModal && <CreateMediaPage onClose={() => setShowModal(false)} />}
+                {showModal && <CreateMediaPage onClose={() => setShowModal(false)} media={selectedMedia} onUpdate={handleUpdate} />}
             </div>  </div>
 
     );
