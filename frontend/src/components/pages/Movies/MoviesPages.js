@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAllMedia } from '../services/mediaService'
+import { deleteMedia, getAllMedia } from '../../services/mediaService'
 import CreateMediaPage from './CreateMediaPage';
 
 const MoviesPage = ({ media }) => {
@@ -25,6 +25,20 @@ const MoviesPage = ({ media }) => {
         }
     }
 
+    const handleDelete = async (mediaId) => {
+        if (window.confirm("¿Estas seguro que deseas eliminar esta pelicula?")) {
+            try {
+                await deleteMedia(mediaId)
+                                
+                alert('Pelicula eliminada exitosamente')
+                fetchMedia()
+
+            } catch (error) {
+                console.error(error.message)
+            }
+        }
+    }
+
     const formatearFecha = (fecha) => {
         return new Intl.DateTimeFormat('es-ES', {
             year: 'numeric',
@@ -47,17 +61,22 @@ const MoviesPage = ({ media }) => {
             <div className="row">
                 {mediaList.map((media) => (
                     <div className="col">
-                        <div key={media.id} className="card mb-3 border-0 " style={{ width: '18rem' }}>
+                        <div key={media._id} className="card mb-3 border-0 " style={{ width: '18rem' }}>
                             <img src={media.Imagen} className="card-img-top" alt={media.Titulo} style={{ width: '288px', height: '432px' }} />
                             <div className="card-body text-center">
                                 <h5 className="card-title">Titulo {media.Titulo}</h5>
                                 <p className="card-text">Genero {media.Genero.Nombre}</p>
-                                <p className="card-text">Año de estreno  {media.AnoEstreno}</p>	
+                                <p className="card-text">Año de estreno  {media.AnoEstreno}</p>
+                            
                             </div>
                             <div className="card-footer text-center">
                                 <small className="text-body-secondary">
                                     {media.createdAt ? formatearFecha(media.createdAt) : 'Fecha no disponible'}
                                 </small>
+                            </div>
+                            <div className="card-footer text-center">
+                            <button type="button" className="btn btn-success btn-sm m-2">Actualizar</button>
+                            <button type="button" className="btn btn-danger btn-sm m-2" onClick={() => handleDelete(media._id)}>Eliminar</button>
                             </div>
                         </div>
                     </div>

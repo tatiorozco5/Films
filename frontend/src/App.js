@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import Navbar from './components/navbar/navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import MoviesPage from './components/pages/MoviesPages';
+import MoviesPage from './components/pages/Movies/MoviesPages';
 
 function App() {
   return (

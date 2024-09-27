@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getFormData, createMedia } from '../services/mediaService';
+import { getFormData, createMedia } from '../../services/mediaService';
 
 const CreateMediaPage = ({ onClose }) => {
     const [formData, setFormData] = useState({
@@ -47,6 +47,18 @@ const CreateMediaPage = ({ onClose }) => {
         try {
             const result = await createMedia(newMedia);
             alert('Película creada exitosamente!');
+            setNewMedia({
+                Titulo: '',
+                Sinopsis: '',
+                Url: '',
+                Imagen: '',
+                AnoEstreno: '',
+                Genero: '',
+                Director: '',
+                Productora: '',
+                Tipo: ''
+            })
+            onClose()
         } catch (error) {
             console.error('Error al crear la película:', error);
             alert('Hubo un error al crear la película. Verifica los datos e intenta nuevamente.');

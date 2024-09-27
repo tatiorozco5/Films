@@ -63,3 +63,25 @@ export const createMedia = async (newMedia) => {
         throw error;
     }
 }
+
+export const deleteMedia = async (mediaId) => {
+    try {
+                
+        const response = await fetch(`${URL_BASE}/media/${mediaId}`, {
+            method: "DELETE"
+        })
+
+        if (!response.ok) {
+            const errorMessage = await response.json()
+
+            console.error('Error desde el servidor al eliminar:', errorMessage);
+            throw new Error(errorMessage.message || 'Error al eliminar la media');
+        }
+
+        return true
+        
+    } catch (error) {
+        console.error('Error al eliminar la película:', error);
+        throw new Error('Hubo un error al eliminar la película.');
+    }
+}
