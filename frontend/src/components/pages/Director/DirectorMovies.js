@@ -6,7 +6,7 @@ const DirectorMovies = () => {
     const [directorList, setDirectorList] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [isUpdating, setIsUpdating] = useState(false);
-    const [currentDirector, setCurrentDirector] = useState({ Nombre_Director:'', Estado:'', });
+    const [currentDirector, setCurrentDirector] = useState({ Nombre_Director: '', Estado: '', });
 
     useEffect(() => {
         fetchDirector()
@@ -25,44 +25,63 @@ const DirectorMovies = () => {
         }
     }
 
-const handleOpenCreateModal = () => {
-    setCurrentDirector({Nombre_Director:'', Estado:''})
-    setShowModal(true)
-}
+    const handleOpenCreateModal = () => {
+        setCurrentDirector({ Nombre_Director: '', Estado: '' })
+        setShowModal(true)
+    }
 
-const handleCloseModal = () => {
-    setShowModal(false)
-}
+    const handleOpenUpdateModal = (director) => {
+        setCurrentDirector(director); 
+        setIsUpdating(true); 
+        setShowModal(true); 
+    };
 
-const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCurrentDirector((prevDirector) => ({
-        ...prevDirector,
-        [name]: value
-    }));
-};
+    const handleCloseModal = () => {
+        setShowModal(false)
+    }
 
-const handleSaveDirector = async () => {
-    if (isUpdating) {
-        // Actualización
-        try {
-            await UpdateDirector(currentDirector._id, currentDirector);
-            fetchDirector(); // Recargar la lista de tipos
-            handleCloseModal(); // Cerrar el modal
-        } catch (error) {
-            console.error('Error al actualizar el director:', error);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setCurrentDirector((prevDirector) => ({
+            ...prevDirector,
+            [name]: value
+        }));
+    };
+
+    const handleSaveDirector = async () => {
+        if (isUpdating) {
+            // Actualización
+            try {
+                await UpdateDirector(currentDirector._id, currentDirector);
+                fetchDirector(); // Recargar la lista de tipos
+                handleCloseModal(); // Cerrar el modal
+            } catch (error) {
+                console.error('Error al actualizar el director:', error);
+            }
+        } else {
+            // Creación
+            try {
+                await CreateDirector(currentDirector);
+                fetchDirector(); // Recargar la lista de tipos
+                handleCloseModal(); // Cerrar el modal
+            } catch (error) {
+                console.error('Error al crear el director:', error);
+            }
         }
-    } else {
-        // Creación
-        try {
-            await CreateDirector(currentDirector);
-            fetchDirector(); // Recargar la lista de tipos
-            handleCloseModal(); // Cerrar el modal
-        } catch (error) {
-            console.error('Error al crear el director:', error);
+    };
+
+    const handleDeleteDirector = async (tipoid) => {
+        const ConfirmDelete = window.confirm("Estas seguro que deseas eliminar este tipo")
+        if (ConfirmDelete) {
+            try {
+                await deleteDirector(tipoid);
+                fetchDirector()
+            } catch (error) {
+                console.error("Error al eliminar el tipo", error);
+
+            }
         }
     }
-};
 
     return (
         <div className="container mt-4">
@@ -76,19 +95,28 @@ const handleSaveDirector = async () => {
                     <div className="col">
                         <div key={director._id} className="card mb-3 border-0 " style={{ width: '18rem' }}>
                             <div className="card-body text-center">
-                                <h5 className="card-title">Titulo {director.Nombre_Director}</h5>
-                                <p className="card-text">Genero {director.Estado}</p>
+                                <h5 className="card-title"> {director.Nombre_Director}</h5>
+                                <p className="card-text"> {director.Estado}</p>
                             </div>
 
                             <div className="card-footer text-center">
-                                {/* <button type="button" className="btn btn-success btn-sm m-2" onClick={() => handleEdit(media)}>Actualizar</button>
-                                <button type="button" className="btn btn-danger btn-sm m-2" onClick={() => handleDelete(media._id)}>Eliminar</button> */}
+                                <button
+                                    type="button"
+                                    className="btn btn-success btn-sm m-2"
+                                    onClick={() => handleOpenUpdateModal(director)}
+                                >
+
+                                    Actualizar
+                                </button>
+                                <button type="button" className="btn btn-danger btn-sm m-2" onClick={() => handleDeleteDirector(director._id)}>
+                                    Eliminar
+                                </button>
                             </div>
                         </div>
                     </div>
                 ))}
-                
-            </div> 
+
+            </div>
             {/* Modal para creación/actualización */}
             {showModal && (
                 <div className="modal show d-block" tabIndex="-1" role="dialog">
@@ -111,7 +139,7 @@ const handleSaveDirector = async () => {
                                     <label>Nombre</label>
                                     <input
                                         type="text"
-                                        name="Nombre"
+                                        name="Nombre_Director" 
                                         value={currentDirector.Nombre_Director}
                                         onChange={handleInputChange}
                                         className="form-control"
@@ -119,14 +147,19 @@ const handleSaveDirector = async () => {
                                 </div>
                                 <div className="form-group">
                                     <label>Estado</label>
-                                    <textarea
-                                        name="Descripcion"
+                                    <select
+                                        name="Estado"
                                         value={currentDirector.Estado}
                                         onChange={handleInputChange}
                                         className="form-control"
-                                    ></textarea>
+                                    >
+                                        <option value="">Seleccione un estado</option>
+                                        <option value="Activo">Activo</option>
+                                        <option value="Inactivo">Inactivo</option>
+                                    </select>
                                 </div>
                             </div>
+
                             <div className="modal-footer">
                                 <button
                                     type="button"
@@ -152,4 +185,4 @@ const handleSaveDirector = async () => {
 }
 
 
-export default DirectorMovies;
+export default DirectorMovies;

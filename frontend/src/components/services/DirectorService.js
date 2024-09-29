@@ -66,7 +66,7 @@ export const UpdateDirector = async (id, updatedDirector) => {
 
 export const deleteDirector = async (DirectorId) => {
     try {
-        const response = await fetch(`${URL_BASE}/tipos/${DirectorId}`, {
+        const response = await fetch(`${URL_BASE}/director/${DirectorId}`, {
             method: 'DELETE'
         });
 
@@ -80,6 +80,6 @@ export const deleteDirector = async (DirectorId) => {
         return await response.json();
     } catch (error) {
         console.error('Error al eliminar el director:', error.message);
-        throw error;
-    }
+        throw error;
+    }
 };
