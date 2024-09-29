@@ -1,6 +1,9 @@
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors');
+
+const cors = require('cors')
+
+
 
 const { port } = require('./config')
 const { connection } = require('./config/db')
@@ -14,6 +17,15 @@ const media = require("./Routes/mediaRoute")
 const app = express()
 connection()
 
+
+const cosrOptions = {
+    origin:'http://localhost:3000',
+    methods:'GET,PUT,POST,DELETE',
+    credentials:true
+}
+
+app.use(cors(cosrOptions))
+
 // Configuración de CORS
 const corsOptions = {
     origin: 'http://localhost:3000/'
@@ -21,6 +33,7 @@ const corsOptions = {
 
 // Uso de CORS
 app.use(cors(corsOptions));
+ 
 
 app.use(express.json())
 app.use(morgan('dev'))

@@ -1,10 +1,12 @@
 const { mongoose } = require('../config/db')
+const { v4: uuidv4 } = require('uuid')
 
 const MediaSchema = new mongoose.Schema({
     Serial: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        default: uuidv4
     },
     Titulo: {
         type: String,

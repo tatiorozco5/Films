@@ -4,14 +4,15 @@ const DirectorModel = require('../models/DirectorModel');
 const ProductoraModel = require('../models/ProductoraModel');
 const TipoModel = require('../models/TipoModel');
 
+
+
 class Media {
     async createMedia(data) {
         try {
-           
-            const genero = await GeneroModel.findOne({ Nombre: data.Genero });
-            const director = await DirectorModel.findOne({ Nombre_Director: data.Director });
-            const productora = await ProductoraModel.findOne({ Nombre_Productora: data.Productora });
-            const tipo = await TipoModel.findOne({ Nombre: data.Tipo });
+            const genero = await GeneroModel.findById(data.Genero);
+            const director = await DirectorModel.findById(data.Director);
+            const productora = await ProductoraModel.findById(data.Productora);
+            const tipo = await TipoModel.findById(data.Tipo);
 
             if (!genero) {
                 return { error: 'Género no encontrado' };

@@ -14,12 +14,12 @@ const ProductoraSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El slogan es requerido'],
         minlength: [10, 'EL Slogan debe ser mayor a 10 caracteres'],
-        maxlength: [50, 'El Slogan debe ser menor a 50 caracteres']
+        maxlength: [70, 'El Slogan debe ser menor a 50 caracteres']
     },
     Descripcion: {
         type: String,
         required: [true, 'La descripción es requerida'],
-        maxlength: [100, 'La descripción debe ser menor a 100 caracteres']
+        maxlength: [200, 'La descripción debe ser menor a 100 caracteres']
     }
 }, {
     timestamps: true,
