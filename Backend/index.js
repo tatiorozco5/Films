@@ -1,6 +1,9 @@
 const express = require('express')
 const morgan = require('morgan')
+
 const cors = require('cors')
+
+
 
 const { port } = require('./config')
 const { connection } = require('./config/db')
@@ -14,6 +17,7 @@ const media = require("./Routes/mediaRoute")
 const app = express()
 connection()
 
+
 const cosrOptions = {
     origin:'http://localhost:3000',
     methods:'GET,PUT,POST,DELETE',
@@ -21,6 +25,15 @@ const cosrOptions = {
 }
 
 app.use(cors(cosrOptions))
+
+// Configuración de CORS
+const corsOptions = {
+    origin: 'http://localhost:3000/'
+};
+
+// Uso de CORS
+app.use(cors(corsOptions));
+ 
 
 app.use(express.json())
 app.use(morgan('dev'))
@@ -32,7 +45,7 @@ tipo(app)
 media(app)
 
 app.get("/", (req, res) => {
-    return res.json({ name: "api films" })
+    return res.json({ name: "API FILMS" })
 })
 
 app.listen(port, () => {
