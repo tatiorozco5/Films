@@ -13,7 +13,7 @@ class DirectorService {
 
     async getAllDirectors() {
         try {
-            const directors = await DirectorModel.find();
+            const directors = await DirectorModel.find(({ Estado: 'Activo' }));
             return directors;
         } catch (error) {
             console.error(error);
