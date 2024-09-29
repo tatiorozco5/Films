@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import TiposPage from './components/pages/Tipos/TiposPages';
 import MoviesPage from './components/pages/Movies/MoviesPages';
 import DirectorMovies from './components/pages/Director/DirectorMovies'
+import GeneroPages from './components/pages/Genero/GeneroPages';
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
           <Route path='/tipos' element={<TiposPage />} />
           <Route path='/movies' element={<MoviesPage />} />
           <Route path='/director' element={<DirectorMovies />} />
+          <Route path='/genero' element={<GeneroPages />} />
 
         </Routes>
 

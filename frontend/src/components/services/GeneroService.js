@@ -1,72 +1,73 @@
 import URL_BASE from "../../config/config"
 
 
-export const getAllDirector = async () => {
+export const getAllGenero = async () => {
     try {
-        const response = await fetch(`${URL_BASE}/director`)
+        const response = await fetch(`${URL_BASE}/genero`)
         const data = await response.json()
         console.log(data);
 
         return data
     } catch (error) {
-        console.error("Error al obtener los directores: ", error);
+        console.error("Error al obtener el genero: ", error);
         return []
     }
 }
 
-export const CreateDirector = async (newDirector) => {
+export const CreateGenero = async (newGenero) => {
     try {
-        const response = await fetch(`${URL_BASE}/director/create`, {
+        const response = await fetch(`${URL_BASE}/genero/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newDirector)
+            body: JSON.stringify(newGenero)
         })
 
         if (!response.ok) {
             const MessageError = await response.json()
-            console.log("Error al obtener los directores: ", MessageError);
+            console.log("Error al obtener el genero: ", MessageError);
             throw new Error(MessageError.error)
 
         }
 
         const data = await response.json()
-        return data
+        return data;
+        
     } catch (error) {
-        console.error('Error al crear el director:', error.response ? error.response.data : error.message);
+        console.error('Error al crear el genero:', error.response ? error.response.data : error.message);
         throw error;
     }
 }
 
-export const UpdateDirector = async (id, updatedDirector) => {
+export const UpdateGenero = async (id, updatedGenero) => {
     try {
-        const response = await fetch(`${URL_BASE}/director/update/${id}`, {
+        const response = await fetch(`${URL_BASE}/genero/update/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updatedDirector)
+            body: JSON.stringify(updatedGenero)
         });
 
         if (!response.ok) {
             const MessageError = await response.json();
-            console.error("Error al actualizar director:", MessageError);
+            console.error("Error al actualizar genero:", MessageError);
             throw new Error(MessageError.error);
         }
 
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Error al actualizar director:', error.message);
+        console.error('Error al actualizar genero:', error.message);
         throw error;
     }
 };
 
 
-export const deleteDirector = async (DirectorId) => {
+export const deleteGenero = async (GeneroId) => {
     try {
-        const response = await fetch(`${URL_BASE}/director/${DirectorId}`, {
+        const response = await fetch(`${URL_BASE}/genero/${GeneroId}`, {
             method: 'DELETE'
         });
 
@@ -79,7 +80,7 @@ export const deleteDirector = async (DirectorId) => {
 
         return await response.json();
     } catch (error) {
-        console.error('Error al eliminar el director:', error.message);
+        console.error('Error al eliminar el genero:', error.message);
         throw error;
     }
 };

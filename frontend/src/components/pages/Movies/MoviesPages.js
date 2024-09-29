@@ -79,7 +79,7 @@ const MoviesPage = ({ media }) => {
                             <img src={media.Imagen} className="card-img-top" alt={media.Titulo} style={{ width: '288px', height: '432px' }} />
                             <div className="card-body text-center">
                                 <h5 className="card-title">Titulo {media.Titulo}</h5>
-                                <p className="card-text">Genero {media.Genero.Nombre}</p>
+                                <p className="card-text">Género {media.Genero?.Nombre ?? 'Género no disponible'}</p>
                                 <p className="card-text">Año de estreno  {media.AnoEstreno}</p>
 
                             </div>
