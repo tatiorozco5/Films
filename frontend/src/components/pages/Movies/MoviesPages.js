@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Slider from "react-slick";
 import { deleteMedia, getAllMedia } from '../../services/mediaService';
 import CreateMediaPage from './CreateMediaPage';
+import Swal from 'sweetalert2';
 
 const MoviesPage = () => {
     const [mediaList, setMediaList] = useState([]);
@@ -41,12 +42,32 @@ const MoviesPage = () => {
     };
 
     const handleDelete = async (mediaId) => {
-        if (window.confirm("¿Estás seguro de que deseas eliminar esta película?")) {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminarlo',
+        });
+    
+        if (result.isConfirmed) {
             try {
                 await deleteMedia(mediaId);
                 fetchMedia();
+                Swal.fire(
+                    'Eliminado!',
+                    'Tu película ha sido eliminada.',
+                    'success'
+                );
             } catch (error) {
                 console.error('Error al eliminar el medio:', error);
+                Swal.fire(
+                    'Error!',
+                    'Hubo un problema al eliminar la película.',
+                    'error'
+                );
             }
         }
     };

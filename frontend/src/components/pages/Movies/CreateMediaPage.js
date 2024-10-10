@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getFormData, createMedia, updateMedia } from '../../services/mediaService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
 const CreateMediaPage = ({ onClose, selectedMedia, onUpdate }) => {
     const [formData, setFormData] = useState({
@@ -77,18 +78,19 @@ const CreateMediaPage = ({ onClose, selectedMedia, onUpdate }) => {
         try {
             if (selectedMedia) {
                 await updateMedia(selectedMedia._id, newMedia);
-                alert('Película actualizada exitosamente!');
+                Swal.fire('Actualizado!', 'Película actualizada exitosamente!', 'success');
                 onUpdate({ ...newMedia, _id: selectedMedia._id });
             } else {
                 await createMedia(newMedia);
-                alert('Película creada exitosamente!');
+                Swal.fire('Creado!', 'Película creada exitosamente!', 'success');
             }
             onClose();
         } catch (error) {
             console.error('Error al crear la película:', error);
-            alert('Hubo un error al crear la película. Verifica los datos e intenta nuevamente.');
+            Swal.fire('Error!', 'Hubo un error al crear la película. Verifica los datos e intenta nuevamente.', 'error');
         }
     };
+    
 
     return (
         <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
@@ -184,11 +186,12 @@ const CreateMediaPage = ({ onClose, selectedMedia, onUpdate }) => {
                                     name="Director"
                                     value={newMedia.Director}
                                     onChange={handleInputChange}
-                                    required
                                 >
-                                    <option value="">Seleccione un director</option>
+                                    <option value="">Selecciona un director</option>
                                     {formData.directores.map((director) => (
-                                        <option key={director._id} value={director._id}>{director.Nombre}</option>
+                                        <option key={director._id} value={director._id}>
+                                            {director.Nombre_Director}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -200,11 +203,12 @@ const CreateMediaPage = ({ onClose, selectedMedia, onUpdate }) => {
                                     name="Productora"
                                     value={newMedia.Productora}
                                     onChange={handleInputChange}
-                                    required
                                 >
-                                    <option value="">Seleccione una productora</option>
+                                    <option value="">Selecciona una productora</option>
                                     {formData.productoras.map((productora) => (
-                                        <option key={productora._id} value={productora._id}>{productora.Nombre}</option>
+                                        <option key={productora._id} value={productora._id}>
+                                            {productora.Nombre_Productora}
+                                        </option>
                                     ))}
                                 </select>
                             </div>

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { CreateProductora, getAllProductora, UpdateProductora, deleteProductora } from '../../services/ProductoraServices'
-
+import React, { useEffect, useState } from 'react';
+import { CreateProductora, getAllProductora, UpdateProductora, deleteProductora } from '../../services/ProductoraServices';
+import Swal from 'sweetalert2';
 
 const ProductoraPages = () => {
-    const [ProductoraList, setProductoraList] = useState([])
-    const [showModal, setShowModal] = useState(false)
+    const [ProductoraList, setProductoraList] = useState([]);
+    const [showModal, setShowModal] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [currentProductora, setCurrentProductora] = useState({ Nombre_Productora: '', Estado: '', Slogan: '', Descripcion: '' });
 
     useEffect(() => {
-        fetchProductora()
-    }, [])
+        fetchProductora();
+    }, []);
 
     const fetchProductora = async () => {
         try {
@@ -21,15 +21,15 @@ const ProductoraPages = () => {
                 console.error('Los datos obtenidos no son válidos:', data);
             }
         } catch (error) {
-            console.error('Error al obtener la lista de medios:', error);
+            console.error('Error al obtener la lista de productoras:', error);
         }
-    }
+    };
 
     const handleOpenCreateModal = () => {
         setCurrentProductora({ Nombre_Productora: '', Estado: '', Slogan: '', Descripcion: '' });
         setIsUpdating(false);
         setShowModal(true);
-    }
+    };
 
     const handleOpenUpdateModal = (Productora) => {
         setCurrentProductora(Productora);
@@ -38,8 +38,8 @@ const ProductoraPages = () => {
     };
 
     const handleCloseModal = () => {
-        setShowModal(false)
-    }
+        setShowModal(false);
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -53,48 +53,92 @@ const ProductoraPages = () => {
         if (isUpdating) {
             try {
                 await UpdateProductora(currentProductora._id, currentProductora);
-                fetchProductora(); // Recargar la lista de Productoras
-                handleCloseModal(); // Cerrar el modal
+                fetchProductora();
+                handleCloseModal();
+
+                Swal.fire({
+                    title: 'Productora Actualizada',
+                    text: 'La productora ha sido actualizada exitosamente',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
             } catch (error) {
-                console.error('Error al actualizar el Productora:', error);
+                console.error('Error al actualizar la productora:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un problema al actualizar la productora',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
         } else {
             try {
-                // Verifica los datos antes de enviarlos
-                console.log('Datos a enviar:', currentProductora);
+                await CreateProductora(currentProductora);
+                fetchProductora();
+                handleCloseModal();
 
-                await CreateProductora(currentProductora); // Aquí haces la creación
-                fetchProductora(); // Recargar la lista de Productoras
-                handleCloseModal(); // Cerrar el modal
+                Swal.fire({
+                    title: 'Productora Creada',
+                    text: 'La productora ha sido creada exitosamente',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
             } catch (error) {
-                console.error('Error al crear el Productora:', error);
+                console.error('Error al crear la productora:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un problema al crear la productora',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
         }
     };
 
     const handleDeleteProductora = async (Productoraid) => {
-        const ConfirmDelete = window.confirm("Estas seguro que deseas eliminar este Productora")
-        if (ConfirmDelete) {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¡No podrás revertir esto!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
             try {
                 await deleteProductora(Productoraid);
-                fetchProductora()
-            } catch (error) {
-                console.error("Error al eliminar el Productora", error);
+                fetchProductora();
 
+                Swal.fire(
+                    'Eliminada',
+                    'La productora ha sido eliminada.',
+                    'success'
+                );
+            } catch (error) {
+                console.error('Error al eliminar la productora:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un problema al eliminar la productora',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
         }
-    }
+    };
 
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h1>Lista de Productora</h1>
                 <button className="btn btn-primary" onClick={handleOpenCreateModal}>
-                    Crear Nuevo Productora
+                    Crear Nueva Productora
                 </button>
             </div>
 
-            <div className="row g-4 ">
+            <div className="row g-4">
                 {ProductoraList.map((Productora) => (
                     <div key={Productora._id} className="col-12 col-sm-6 col-md-4 col-lg-3">
                         <div className="card h-100 shadow border-0">
@@ -202,9 +246,7 @@ const ProductoraPages = () => {
                 </div>
             )}
         </div>
-
     );
-}
-
+};
 
 export default ProductoraPages;
