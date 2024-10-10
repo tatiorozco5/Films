@@ -18,21 +18,16 @@ const app = express()
 connection()
 
 
-const cosrOptions = {
-    origin:'http://localhost:3000',
-    methods:'GET,PUT,POST,DELETE',
-    credentials:true
-}
-
-app.use(cors(cosrOptions))
-
-// Configuración de CORS
 const corsOptions = {
-    origin: 'http://localhost:3000/'
+    origin: 'http://localhost:3000', 
+    methods: 'GET,PUT,POST,DELETE',
+    credentials: true
 };
 
-// Uso de CORS
 app.use(cors(corsOptions));
+
+
+
  
 
 app.use(express.json())
