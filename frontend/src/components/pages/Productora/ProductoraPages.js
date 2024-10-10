@@ -87,122 +87,121 @@ const ProductoraPages = () => {
 
     return (
         <div className="container mt-4">
-            <h1>Lista de Productora</h1>
-            <button className="btn btn-primary m-2" onClick={handleOpenCreateModal}>
-                Crear Nuevo Productora
-            </button>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <h1>Lista de Productora</h1>
+                <button className="btn btn-primary" onClick={handleOpenCreateModal}>
+                    Crear Nuevo Productora
+                </button>
+            </div>
 
-            <div className="row">
+            <div className="row g-4 ">
                 {ProductoraList.map((Productora) => (
-                    <div className="col">
-                        <div key={Productora._id} className="card mb-3 border-0 " style={{ width: '18rem' }}>
-                            <div className="card-body text-center">
-                                <h5 className="card-title"> {Productora.Nombre_Productora}</h5>
-                                <p className="card-text"> {Productora.Estado}</p>
-                                <p className="card-text"> {Productora.Descripcion}</p>
+                    <div key={Productora._id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div className="card h-100 shadow border-0">
+                            <div className="card-body d-flex flex-column justify-content-between">
+                                <h5 className="card-title text-center mb-3">
+                                    {Productora.Nombre_Productora}
+                                </h5>
+                                <p className="card-text text-center">
+                                    <strong>Estado: </strong>{Productora.Estado}
+                                </p>
+                                <p className="card-text text-center">
+                                    {Productora.Descripcion}
+                                </p>
                             </div>
-
-                            <div className="card-footer text-center">
+                            <div className="card-footer text-center bg-light border-0">
                                 <button
                                     type="button"
-                                    className="btn btn-success btn-sm m-2"
+                                    className="btn btn-success btn-sm m-1"
                                     onClick={() => handleOpenUpdateModal(Productora)}
                                 >
-
                                     Actualizar
                                 </button>
-                                <button type="button" className="btn btn-danger btn-sm m-2" onClick={() => handleDeleteProductora(Productora._id)}>
+                                <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm m-1"
+                                    onClick={() => handleDeleteProductora(Productora._id)}
+                                >
                                     Eliminar
                                 </button>
                             </div>
                         </div>
                     </div>
                 ))}
-
             </div>
+
             {/* Modal para creación/actualización */}
             {showModal && (
-                <div className="modal show d-block" tabIndex="-1" role="dialog">
-                    <div className="modal-dialog" role="document">
+                <div className="modal show d-block fade" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                    <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header bg-primary text-white">
                                 <h5 className="modal-title">
-                                    {isUpdating ? 'Actualizar Productora' : 'Crear Nuevo Productora'}
+                                    {isUpdating ? 'Actualizar Productora' : 'Crear Nueva Productora'}
                                 </h5>
-                                <button
-                                    type="button"
-                                    className="close"
-                                    onClick={handleCloseModal}
-                                >
-                                    <span>&times;</span>
-                                </button>
+                                <button type="button" className="btn-close btn-close-white" onClick={handleCloseModal}></button>
                             </div>
                             <div className="modal-body">
-                                <div className="form-group">
-                                    <label>Nombre</label>
+                                <div className="mb-3">
+                                    <label className="form-label">Nombre</label>
                                     <input
                                         type="text"
                                         name="Nombre_Productora"
                                         value={currentProductora.Nombre_Productora}
                                         onChange={handleInputChange}
                                         className="form-control"
+                                        placeholder="Ingresa el nombre de la productora"
                                     />
                                 </div>
-                                <div className="form-group">
-                                    <label>Estado</label>
+                                <div className="mb-3">
+                                    <label className="form-label">Estado</label>
                                     <select
                                         name="Estado"
                                         value={currentProductora.Estado}
                                         onChange={handleInputChange}
-                                        className="form-control"
+                                        className="form-select"
                                     >
                                         <option value="">Seleccione un estado</option>
                                         <option value="Activo">Activo</option>
                                         <option value="Inactivo">Inactivo</option>
                                     </select>
                                 </div>
-                                <div className="form-group">
-                                    <label>Slogan</label>
+                                <div className="mb-3">
+                                    <label className="form-label">Slogan</label>
                                     <input
                                         type="text"
                                         name="Slogan"
                                         value={currentProductora.Slogan}
                                         onChange={handleInputChange}
                                         className="form-control"
+                                        placeholder="Ingresa el slogan de la productora"
                                     />
                                 </div>
-                                <div className="form-group">
-                                    <label>Descripcion</label>
-                                    <input
-                                        type="text"
+                                <div className="mb-3">
+                                    <label className="form-label">Descripción</label>
+                                    <textarea
                                         name="Descripcion"
                                         value={currentProductora.Descripcion}
                                         onChange={handleInputChange}
                                         className="form-control"
-                                    />
+                                        rows="3"
+                                        placeholder="Describe la productora"
+                                    ></textarea>
                                 </div>
                             </div>
-
                             <div className="modal-footer">
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    onClick={handleCloseModal}
-                                >
+                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
                                     Cancelar
                                 </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-primary"
-                                    onClick={handleSaveProductora}
-                                >
+                                <button type="button" className="btn btn-primary" onClick={handleSaveProductora}>
                                     {isUpdating ? 'Guardar Cambios' : 'Crear'}
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            )} </div>
+            )}
+        </div>
 
     );
 }

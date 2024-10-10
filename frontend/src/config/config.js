@@ -1,3 +1,3 @@
-const URL_BASE = 'http://localhost:4000/api'
+const URL_BASE = process.env.REACT_APP_BACKEND_URL;
 
 export default URL_BASE
