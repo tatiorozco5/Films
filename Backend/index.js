@@ -5,7 +5,7 @@ const cors = require('cors')
 
 
 
-const { port } = require('./config')
+const { port, urlcors } = require('./config')
 const { connection } = require('./config/db')
 
 const genero = require("./Routes/generoRoute")
@@ -19,7 +19,7 @@ connection()
 
 
 const corsOptions = {
-    origin: 'http://localhost:3000', 
+    origin: urlcors , 
     methods: 'GET,PUT,POST,DELETE',
     credentials: true
 };

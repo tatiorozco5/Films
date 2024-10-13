@@ -5,7 +5,8 @@ const config={
     dbUsername:process.env.DB_USERNAME,
     dbPassword:process.env.DB_PASSWORD,
     dbHost:process.env.DB_HOST,
-    dbName:process.env.DB_NAME
+    dbName:process.env.DB_NAME,
+    urlcors:process.env.URL_CORS
 
 }
 
