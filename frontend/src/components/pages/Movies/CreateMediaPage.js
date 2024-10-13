@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { getFormData, createMedia, updateMedia } from '../../services/mediaService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 
 const CreateMediaPage = ({ onClose, selectedMedia, onUpdate }) => {
