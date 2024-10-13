@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { CreateProductora, getAllProductora, UpdateProductora, deleteProductora } from '../../services/ProductoraServices';
 import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const ProductoraPages = () => {
     const [ProductoraList, setProductoraList] = useState([]);
@@ -159,14 +161,14 @@ const ProductoraPages = () => {
                                     className="btn btn-success btn-sm m-1"
                                     onClick={() => handleOpenUpdateModal(Productora)}
                                 >
-                                    Actualizar
+                                       <FontAwesomeIcon icon={faEdit} /> Actualizar
                                 </button>
                                 <button
                                     type="button"
                                     className="btn btn-danger btn-sm m-1"
                                     onClick={() => handleDeleteProductora(Productora._id)}
                                 >
-                                    Eliminar
+                                      <FontAwesomeIcon icon={faTrash} /> Eliminar
                                 </button>
                             </div>
                         </div>
